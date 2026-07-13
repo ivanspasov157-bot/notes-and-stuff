@@ -1,1 +1,40 @@
 
+graph bfs prototype 1 (it works on the whole graph, i need to make it so it takes input for beggining and end)
+
+function bfs(graph, start) {
+
+    const visited = new Set();
+    const queue = [];
+    const result = [];
+
+    visited.add(start);
+    queue.push(start);
+
+    while (queue.length > 0) {
+
+        const current = queue.shift();
+        result.push(current);
+
+      for (const connection of graph[current]) {
+  const neighbor = connection.node;
+
+  if (!visited.has(neighbor)) {
+    visited.add(neighbor);
+    queue.push(neighbor);
+  }
+}
+
+        }
+
+    }
+
+    return result;
+
+}
+
+console.log(bfs(graph, "A"));
+
+
+
+
+console.log(result);

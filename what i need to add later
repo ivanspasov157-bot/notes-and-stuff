@@ -1,0 +1,12 @@
+what i need to add later 
+
+Later, I would make every algorithm return the same type of object:
+return {
+
+    visitedOrder: [...],
+
+    path: [...],
+
+    distance: ...
+
+};

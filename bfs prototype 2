@@ -37,4 +37,217 @@ console.log(bfs(graph, "A"));
 
 
 
+code with end 
+
+// Breadth-First Search (BFS)
+// Finds the shortest path in terms of NUMBER OF EDGES.
+// (It ignores edge weights.)
+
+export function bfs(graph, start, end) {
+
+  // Stores every node that has already been discovered.
+  // A Set only stores unique values.
+  const visited = new Set();
+
+  // Queue of nodes waiting to be explored.
+  // BFS always explores in First-In First-Out (FIFO) order.
+  const queue = [];
+
+  // Records the order in which nodes are visited.
+  // This is useful for visualizing the traversal.
+  const visitedOrder = [];
+
+  // Stores where each node came from.
+  // Example:
+  // previous["D"] = "B"
+  // means we first reached D from B.
+  const previous = {};
+
+  // Safety check.
+  // If either the start or end node doesn't exist,
+  // stop the algorithm immediately.
+  if (!graph[start] || !graph[end]) {
+    throw new Error("Start or end node does not exist in the graph.");
+  }
+
+  // Mark the starting node as visited.
+  visited.add(start);
+
+  // Put the starting node into the queue.
+  queue.push(start);
+
+  // The starting node has no previous node,
+  // because it is where the path begins.
+  previous[start] = null;
+
+  // Continue while there are still nodes left to explore.
+  while (queue.length > 0) {
+
+    // Remove the FIRST node from the queue.
+    // queue.shift() removes it and returns it.
+    const current = queue.shift();
+
+    // Save the current node in the traversal order.
+    visitedOrder.push(current);
+
+    // If we've reached the destination,
+    // stop searching.
+    // Because BFS explores level by level,
+    // this is guaranteed to be the shortest path
+    // (by number of edges).
+    if (current === end) {
+      break;
+    }
+
+    // Get the current node's adjacency list.
+    //
+    // Example:
+    // current = "A"
+    //
+    // graph["A"] =
+    // [
+    //   { node: "B", weight: 2 },
+    //   { node: "C", weight: 4 }
+    // ]
+    //
+    // for...of loops through every connection object.
+    for (const connection of graph[current]) {
+
+      // Extract only the neighbour's name.
+      //
+      // connection =
+      // { node: "B", weight: 2 }
+      //
+      // neighbour = "B"
+      const neighbor = connection.node;
+
+      // If we haven't discovered this neighbour yet...
+      if (!visited.has(neighbor)) {
+
+        // Mark it as discovered.
+        visited.add(neighbor);
+
+        // Remember where we came from.
+        //
+        // Example:
+        //
+        // current = "A"
+        // neighbour = "B"
+        //
+        // previous["B"] = "A"
+        //
+        // Later this allows us to rebuild
+        // the shortest path.
+        previous[neighbor] = current;
+
+        // Add the neighbour to the queue
+        // so it will be explored later.
+        queue.push(neighbor);
+      }
+    }
+  }
+
+  // If the destination was never visited,
+  // there is no path between start and end.
+  if (!visited.has(end)) {
+
+    return {
+
+      // Show the nodes we explored.
+      visitedOrder,
+
+      // No valid path exists.
+      path: [],
+
+      // Distance is unknown.
+      distance: null,
+
+    };
+  }
+
+  // Rebuild the path by walking backwards.
+  //
+  // Example:
+  //
+  // previous =
+  //
+  // B -> A
+  // D -> B
+  // F -> D
+  // G -> F
+  //
+  // Starting from G gives:
+  //
+  // G <- F <- D <- B <- A
+  const path = [];
+
+  // Start rebuilding from the destination.
+  let currentNode = end;
+
+  // Continue until we reach the starting node,
+  // whose previous value is null.
+  while (currentNode !== null) {
+
+    // Save the current node.
+    path.push(currentNode);
+
+    // Move one step backwards.
+    currentNode = previous[currentNode];
+
+  }
+
+  // The path is currently backwards.
+  //
+  // G
+  // F
+  // D
+  // B
+  // A
+  //
+  // Reverse it so it becomes:
+  //
+  // A
+  // B
+  // D
+  // F
+  // G
+  path.reverse();
+
+  // Return everything the frontend needs.
+  return {
+
+    // Order in which BFS explored the graph.
+    visitedOrder,
+
+    // Shortest path (fewest edges).
+    path,
+
+    // Number of edges in the path.
+    //
+    // Example:
+    //
+    // A -> B -> D -> F -> G
+    //
+    // Path contains 5 nodes
+    // but only 4 edges.
+    distance: path.length - 1,
+
+  };
+}
+
+// Run the algorithm.
+//
+// Graph:
+// your graph representation
+//
+// Start:
+// A
+//
+// Destination:
+// G
+console.log(bfs(graph, "A", "G"));
+
+
+
+
 console.log(result);

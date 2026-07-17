@@ -1,0 +1,6 @@
+graph coordinnates
+export const nodePositions = {
+  A: { x: 100, y: 100 },
+  B: { x: 250, y: 100 },
+  C: { x: 180, y: 220 },
+};

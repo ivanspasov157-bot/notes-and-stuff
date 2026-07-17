@@ -1,4 +1,4 @@
-dijkstra algorithm from geeks for geeks: prototipe 
+dijkstra  
 
 import { graph } from "../data/graph.js";
 

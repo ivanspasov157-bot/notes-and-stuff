@@ -1,4 +1,4 @@
-A* from geeks for geeks prototipe
+A* 
 
 
 import { graph } from "../data/graph.js";
